@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RentAGym.Application.LandLordUseCases;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace RentAGym.UI.rc2.Controllers
 {
@@ -41,7 +42,11 @@ namespace RentAGym.UI.rc2.Controllers
         public async Task<IActionResult> GetFacilities(string landlordId)
         {
             var facility = await _mediator.Send(new GetFacilitiesListRequest(landlordId));
-            return Ok(facility);
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            return Ok(JsonConvert.SerializeObject(facility, settings));
         }
 
         [HttpGet("ll/rents/{landlordId}")]
@@ -55,7 +60,7 @@ namespace RentAGym.UI.rc2.Controllers
         public async Task<IActionResult> GetHallsByFacilityId([FromQuery] int facilityId)
         {
             var halls = await _mediator.Send(new GetHallsByFacilityIdRequest(facilityId));
-            return Ok(halls);
+            return Ok(JsonConvert.SerializeObject(halls));
         }
 
     }

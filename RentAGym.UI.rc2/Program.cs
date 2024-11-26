@@ -46,7 +46,10 @@ var builder = WebApplication.CreateBuilder(args);
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperSecretKeyForJwtWhichIsAtLeast32CharactersLong"))
     };
 });*/
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+});
 
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
@@ -113,6 +116,15 @@ builder.Services
     .AddPersistence(builder.Configuration)
     .AddFileAccess();
 
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
 // Добавляем Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -122,7 +134,7 @@ builder.Services.AddSwaggerGen(options =>
     {
         Version = "v1",
         Title = "RentAGym API",
-        Description = "API для RentAGym"
+        Description = "API для RentAGym"        
     });
 });
 
@@ -156,7 +168,7 @@ else
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "RentAGym API v1");
-        options.RoutePrefix = string.Empty;
+        options.RoutePrefix = "swagger";
     });
 }
 

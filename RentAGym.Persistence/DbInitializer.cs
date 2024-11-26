@@ -20,8 +20,8 @@ namespace RentAGym.Persistence
             var services = scope.ServiceProvider;
             using var context = services.GetRequiredService<ApplicationDbContext>();
             using var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
-            await context.Database.EnsureDeletedAsync();
-            await context.Database.EnsureCreatedAsync();
+            //await context.Database.EnsureDeletedAsync();
+            //await context.Database.EnsureCreatedAsync();
 
             #region Users
 
@@ -186,10 +186,10 @@ namespace RentAGym.Persistence
             halls[0].OverallRating = 5;
             halls[1].OverallRating = 3;
             await context.SaveChangesAsync();
-            
+
             #endregion
 
-          /*  #region Schedule
+            #region Schedule
             ReservedSchedule[] schedules = new ReservedSchedule[]
             {
                 new ReservedSchedule(){HallId=halls[0].Id,TenantId=tenant.Id, ReservedHour = DateTime.ParseExact("16/11/2023 11:00", "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture)},
@@ -223,7 +223,7 @@ namespace RentAGym.Persistence
             await context.SaveChangesAsync();
 
             #endregion
-*/
+
 
         }
     }

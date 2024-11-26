@@ -12,6 +12,7 @@ namespace RentAGym.Application.Specifications.HallSpecification
         public HallDetailsByIdSpecification(int id)
         {
             Query.Where(h=>h.Id == id)
+                .AsNoTracking()
                 .Include(h=>h.Facility)
                 .Include(h=>h.Facility.Landlord)
                 .Include(h=>h.Images)

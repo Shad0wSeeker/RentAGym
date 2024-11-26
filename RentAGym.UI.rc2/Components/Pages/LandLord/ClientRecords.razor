@@ -15,7 +15,7 @@
     </div>
     @if (IsActive)
     {
-        if (currentStory.Count() == 0 || currentStory == null)
+        if (currentStory == null || !currentStory.Any())
         {
             <p>Активные записи отсутствуют</p>
         }
@@ -117,8 +117,8 @@
     [CascadingParameter] public Task<AuthenticationState>? AuthenticationStateTask { get; set; }
     [Inject] public IMediator? Mediator { get; set; }
     private IEnumerable<RentDTO>? _schedules;
-    private IEnumerable<RentDTO>? currentStory;
-    private IEnumerable<RentDTO>? archiveStory;
+    private IEnumerable<RentDTO> currentStory = Enumerable.Empty<RentDTO>();
+    private IEnumerable<RentDTO> archiveStory = Enumerable.Empty<RentDTO>();
     private bool IsActive { get; set; } = true;
 
     protected override async Task OnInitializedAsync()
@@ -138,6 +138,11 @@
         {
             currentStory = _schedules!.Where(x => x.IsDone == false);
             archiveStory = _schedules!.Where(x => x.IsDone == true);
+        }
+        else
+        {
+            currentStory = new List<RentDTO>();
+            archiveStory = new List<RentDTO>();
         }
         _schedules = null;
     }

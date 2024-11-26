@@ -15,11 +15,18 @@
 
 <div class="chat-container">
     <div @onclick="NavToDetails" class="chat-header">
-        <img src="@Current!.Images.First().ImageUri"/>
-        <div class="user-info">
-            <label>@Current.Name</label>
-            <label>@Current.Price руб</label>
-        </div>
+        @if (Current != null)
+        {
+            <img src="@Current!.Images.First().ImageUri"/>
+            <div class="user-info">
+                <label>@Current.Name</label>
+                <label>@Current.Price руб</label>
+            </div>
+        }
+        else
+        {
+            <p>Загрузка данных...</p>
+        }
     </div>
     <div class="chat-body" id="chat-body">
         <ul id="messagesList">

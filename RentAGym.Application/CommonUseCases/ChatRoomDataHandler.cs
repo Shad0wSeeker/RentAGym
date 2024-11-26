@@ -26,7 +26,8 @@ namespace RentAGym.Application.CommonUseCases
             var additionalData = await _unitOfWork.HallRepository.GetBySpecAsync(new HallDetailsByIdSpecification(rentPiece.HallId));
             using var userManager = _serviceProvider.CreateScope().ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
             var tenant = await userManager.FindByIdAsync(rentPiece.TenantId);
-            var landlord = await userManager.FindByIdAsync(rentPiece.Hall.LandlordId);
+            var hall = await _unitOfWork.HallRepository.GetByIdAsync(rentPiece.HallId);
+            var landlord = await userManager.FindByIdAsync(hall.LandlordId);
             RentDTO dto = new() { LandlordName = landlord.UserName, TenantName = tenant.UserName, RentBorderId = rentPiece.Id, HallId = rentPiece.HallId };
             return dto;
         }

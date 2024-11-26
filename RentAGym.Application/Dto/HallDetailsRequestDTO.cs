@@ -8,6 +8,13 @@ using System.Threading.Tasks;
 
 namespace RentAGym.Application.Dto
 {
+    /*public class ReviewDto
+    {
+        public int Mark { get; set; }
+        public string Username { get; set; }
+        public string Contents { get; set; }
+    }*/
+
     public class HallDetailsRequestDTO
     {
         public int Id { get; set; }

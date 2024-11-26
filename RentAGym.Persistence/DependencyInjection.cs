@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RentAGym.Application.Interfaces;
@@ -9,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace RentAGym.Persistence
 {
     public static class DependencyInjection
@@ -16,12 +16,15 @@ namespace RentAGym.Persistence
         public static IServiceCollection AddPersistence(this IServiceCollection services,
             IConfiguration configuration)
         {
-            var connString = configuration.GetConnectionString("SqLiteConnection");
-            services.AddDbContext<ApplicationDbContext>(opt =>
+            var connString = configuration.GetConnectionString("DefaultConnection");
+            services.AddPooledDbContextFactory<ApplicationDbContext>(opt =>
             {
-                opt.UseSqlite(connString);
+                opt.UseMySql(connString, ServerVersion.AutoDetect(connString));
             });
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddDbContext<ApplicationDbContext>(opt => {
+                opt.UseMySql(connString, ServerVersion.AutoDetect(connString));
+            });
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

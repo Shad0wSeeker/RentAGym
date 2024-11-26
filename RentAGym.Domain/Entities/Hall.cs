@@ -44,6 +44,7 @@ namespace RentAGym.Domain.Entities
         public int HallTypeId {  get; set; }
         public HallType HallType { get; set; }
 
+        [JsonIgnore]
         public List<Review>? Reviews { get; set; } = new List<Review>();
 
         /// <summary>

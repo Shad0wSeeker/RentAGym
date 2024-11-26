@@ -1,5 +1,6 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RentAGym.Application.Interfaces;
 using RentAGym.Domain.Entities;
 using System;
@@ -27,34 +28,34 @@ namespace RentAGym.Persistence
         private readonly Lazy<IRepositoryBase<WorkSchedulePiece>> _workSchedule;
         private readonly Lazy<IRepositoryBase<ChatMessage>> _chatMessages;
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork(IDbContextFactory<ApplicationDbContext> contextFactory)
         {
-            _context = context;
+            _context = contextFactory.CreateDbContext();
             _landLordRepository = new Lazy<IRepositoryBase<Landlord>>(
-                                            () => new EfRepository<Landlord>(context));
+                                            () => new EfRepository<Landlord>(_context));
             _tenantRepository = new Lazy<IRepositoryBase<Tenant>>(
-                                            () => new EfRepository<Tenant>(context));
+                                            () => new EfRepository<Tenant>(_context));
             _facilityRepository = new Lazy<IRepositoryBase<Facility>>(
-                ()=> new EfRepository<Facility>(context));
+                ()=> new EfRepository<Facility>(_context));
             _hallRepository = new Lazy<IRepositoryBase<Hall>>(
-                ()=> new EfRepository<Hall>(context));
+                ()=> new EfRepository<Hall>(_context));
             _hallTypeRepository = new Lazy<IRepositoryBase<HallType>>(
-                ()=>new EfRepository<HallType>(context));
+                ()=>new EfRepository<HallType>(_context));
             _imageRepository = new Lazy<IRepositoryBase<ImageData>>(
-                ()=> new EfRepository<ImageData>(context));
+                ()=> new EfRepository<ImageData>(_context));
             _optionRepository = new Lazy<IRepositoryBase<Option>>(
-                ()=> new EfRepository<Option>(context));
+                ()=> new EfRepository<Option>(_context));
             _regionRepository = new Lazy<IRepositoryBase<Region>>(
-                ()=> new EfRepository<Region>(context));
+                ()=> new EfRepository<Region>(_context));
 
             _reviewRepository = new Lazy<IRepositoryBase<Review>>(
-                () => new EfRepository<Review>(context));
+                () => new EfRepository<Review>(_context));
             _scheduleRepository = new Lazy<IRepositoryBase<ReservedSchedule>>(
-                () => new EfRepository<ReservedSchedule>(context));
+                () => new EfRepository<ReservedSchedule>(_context));
             _workSchedule = new Lazy<IRepositoryBase<WorkSchedulePiece>>(
-                ()=> new EfRepository<WorkSchedulePiece>(context));
+                ()=> new EfRepository<WorkSchedulePiece>(_context));
             _chatMessages = new Lazy<IRepositoryBase<ChatMessage>>(
-                ()=>new EfRepository<ChatMessage>(context));
+                ()=>new EfRepository<ChatMessage>(_context));
         }
 
         public IRepositoryBase<Landlord> LandLordRepository 

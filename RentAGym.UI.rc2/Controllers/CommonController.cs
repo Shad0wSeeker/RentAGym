@@ -30,35 +30,40 @@ namespace RentAGym.UI.rc2.Controllers
         public async Task<IActionResult> GetChatHistory([FromQuery] string name)
         {
             var result = await _mediator.Send(new GetChatRoomHistoryRequest(name));
-            return Ok(result);
+            return Ok(JsonConvert.SerializeObject(result));
         }
 
         [HttpGet("day")]
         public async Task<IActionResult> GetDaySchedule([FromQuery] int hallId, [FromQuery] DateOnly date)
         {
             var result = await _mediator.Send(new GetDayScheduleRequest(hallId, date));
-            return Ok(result);
+            return Ok(JsonConvert.SerializeObject(result));
         }
 
         [HttpGet("hall/{id}")]
         public async Task<IActionResult> GetHallById(int id)
         {
             var result = await _mediator.Send(new GetHallByIdRequest(id));
-            return Ok(result);
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            Console.WriteLine(JsonConvert.SerializeObject(result));
+            return Ok(JsonConvert.SerializeObject(result, settings));
         }
 
         [HttpGet("hall/list")]
         public async Task<ActionResult<IEnumerable<HallListRequestDTO>>> GetHallList([FromQuery] HallListFilter filter)
         {
             var result = await _mediator.Send(new GetHallListRequest(filter));
-            return Ok(result);
+            return Ok(JsonConvert.SerializeObject(result));
         }
 
         [HttpGet("hall/types")]
         public async Task<ActionResult> GetHallTypes()
         {
             var result = await _mediator.Send(new GetHallTypesRequest());
-            return Ok(result);
+            return Ok(JsonConvert.SerializeObject(result));
         }
 
         [HttpGet("monthSchedule")]
@@ -72,21 +77,21 @@ namespace RentAGym.UI.rc2.Controllers
         public async Task<ActionResult> GetOptions()
         {
             var result = await _mediator.Send(new GetOptionsListRequest());
-            return Ok(result);
+            return Ok(JsonConvert.SerializeObject(result));
         }
 
         [HttpGet("user/info/{id}")]
         public async Task<ActionResult> GetUserInfo(string id)
         {
             var result = await _mediator.Send(new GetUserInfoRequest(id));
-            return Ok(result);
+            return Ok(JsonConvert.SerializeObject(result));
         }
 
         [HttpPost("message")]
         public async Task<ActionResult> SaveMessage([FromBody] ChatMessage msg)
         {
             var result = await _mediator.Send(new SaveMessageRequest(msg));
-            return Ok(result);
+            return Ok(JsonConvert.SerializeObject(result));
         }
 
     }
