@@ -57,11 +57,11 @@ namespace RentAGym.UI.rc2.Controllers
         }
 
         [HttpGet("ll/halls")]
-        public async Task<IActionResult> GetHallsByFacilityId([FromQuery] int facilityId)
+        public async Task<IActionResult> GetHallsByFacilityId( int facilityId)
         {
             var halls = await _mediator.Send(new GetHallsByFacilityIdRequest(facilityId));
             return Ok(JsonConvert.SerializeObject(halls));
         }
-
+        
     }
 }

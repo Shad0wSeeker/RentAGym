@@ -136,6 +136,7 @@ builder.Services.AddSwaggerGen(options =>
         Title = "RentAGym API",
         Description = "API для RentAGym"        
     });
+
 });
 
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
@@ -183,7 +184,7 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 
-app.UseAntiforgery();
+
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
@@ -198,6 +199,8 @@ app.UseResponseCompression();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseAntiforgery();
 
 app.MapControllers();
 app.MapHub<ChatHub>("/chathub");

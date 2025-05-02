@@ -48,7 +48,7 @@ namespace RentAGym.UI.rc2.Controllers
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             };
-            Console.WriteLine(JsonConvert.SerializeObject(result));
+            Console.WriteLine(JsonConvert.SerializeObject(result, settings));
             return Ok(JsonConvert.SerializeObject(result, settings));
         }
 
@@ -92,6 +92,27 @@ namespace RentAGym.UI.rc2.Controllers
         {
             var result = await _mediator.Send(new SaveMessageRequest(msg));
             return Ok(JsonConvert.SerializeObject(result));
+        }
+
+
+        [HttpPut("update-phone")]
+        public async Task<IActionResult> UpdatePhone([FromBody] UpdatePhoneNumberRequest request)
+        {
+            var result = await _mediator.Send(request);
+            if (!result)
+                return BadRequest("Не удалось обновить номер телефона");
+
+            return Ok(new { message = "Телефон обновлён" });
+        }
+
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            var (success, error) = await _mediator.Send(request);
+            if (!success)
+                return BadRequest(new { message = error });
+
+            return Ok(new { message = "Пароль успешно изменён" });
         }
 
     }

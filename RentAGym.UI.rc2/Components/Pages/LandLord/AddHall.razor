@@ -36,7 +36,7 @@
                     </div>
                 }
             </div>
-        </section
+        </section>
 
         <label for="validationCustom01" class="form-label">Название</label>
         <InputText @bind-Value="@Hall.Name" type="text" class="form-control-custom" required></InputText>
@@ -125,14 +125,26 @@
     protected override bool ShouldRender() => shouldRender;
     [SupplyParameterFromForm] public CreateHallRequestDTO Hall { get; set; } = new();
 
-    IEnumerable<Option> resp;
+    IEnumerable<Option> resp = new List<Option>();
+    
     List<Option> selectedValues = new List<Option>();
     Option selectedOption = new();
 
-    IEnumerable<HallType> typeOfHall;
+    IEnumerable<HallType> typeOfHall = new List<HallType>();
     List<HallType> HallTypes = new List<HallType>();
     HallType selectedType = new();
-    WorkSchedulePiece[] works;
+
+    WorkSchedulePiece[] works  = new WorkSchedulePiece[]
+       {
+            new WorkSchedulePiece() { WorkFrom = TimeOnly.Parse("9:00"),WorkTo = TimeOnly.Parse("23:00")},
+            new WorkSchedulePiece() { WorkFrom = TimeOnly.Parse("9:00"),WorkTo = TimeOnly.Parse("23:00")},
+            new WorkSchedulePiece() { WorkFrom = TimeOnly.Parse("9:00"),WorkTo = TimeOnly.Parse("23:00")},
+            new WorkSchedulePiece() { WorkFrom = TimeOnly.Parse("9:00"),WorkTo = TimeOnly.Parse("23:00")},
+            new WorkSchedulePiece() { WorkFrom = TimeOnly.Parse("9:00"),WorkTo = TimeOnly.Parse("23:00")},
+            new WorkSchedulePiece() { WorkFrom = TimeOnly.Parse("10:00"),WorkTo = TimeOnly.Parse("21:00")},
+            new WorkSchedulePiece() { WorkFrom = TimeOnly.Parse("10:00"),WorkTo = TimeOnly.Parse("21:00")}
+
+    };
 
     protected override async Task OnInitializedAsync()
     {
@@ -142,16 +154,16 @@
         {
             HallTypes.Add(type);
         }
-        works = new WorkSchedulePiece[]
-       {
-                new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("9:00"),WorkTo=TimeOnly.Parse("23:00")},
-                new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("9:00"),WorkTo=TimeOnly.Parse("23:00")},
-                new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("9:00"),WorkTo=TimeOnly.Parse("23:00")},
-                new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("9:00"),WorkTo=TimeOnly.Parse("23:00")},
-                new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("9:00"),WorkTo=TimeOnly.Parse("23:00")},
-                new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("10:00"),WorkTo=TimeOnly.Parse("21:00")},
-                new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("10:00"),WorkTo=TimeOnly.Parse("21:00")}
-       };
+       //  works = new WorkSchedulePiece[]
+       // {
+       //          new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("9:00"),WorkTo=TimeOnly.Parse("23:00")},
+       //          new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("9:00"),WorkTo=TimeOnly.Parse("23:00")},
+       //          new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("9:00"),WorkTo=TimeOnly.Parse("23:00")},
+       //          new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("9:00"),WorkTo=TimeOnly.Parse("23:00")},
+       //          new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("9:00"),WorkTo=TimeOnly.Parse("23:00")},
+       //          new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("10:00"),WorkTo=TimeOnly.Parse("21:00")},
+       //          new WorkSchedulePiece(){WorkFrom = TimeOnly.Parse("10:00"),WorkTo=TimeOnly.Parse("21:00")}
+       // };
     }
     List<int> selectedTypeIds { get; set; } = new List<int>();
 
