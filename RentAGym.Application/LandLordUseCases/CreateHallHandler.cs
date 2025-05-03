@@ -28,7 +28,7 @@ namespace RentAGym.Application.LandLordUseCases
                 tempHall.LandlordId = fac.LandLordId;    //!!!
                 tempHall.Facility = fac;
                 tempHall.FacilityId = fac.Id;
-                tempHall.Options = options.Where(o => tempHall.Options.Contains(o)).ToList();
+                tempHall.Options = options.Where(o => tempHall.Options.Any(t => t.Id == o.Id)).ToList();
 
                 var hall = await _unitOfWork.HallRepository.AddAsync(tempHall);
                 foreach (var preFile in request.requestDTO.ImagePaths)

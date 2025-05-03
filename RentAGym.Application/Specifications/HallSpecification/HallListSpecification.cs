@@ -26,15 +26,7 @@ namespace RentAGym.Application.Specifications.HallSpecification
                  h.BasePrice >= filter.PriceFrom &&
                  h.BasePrice <= (filter.PriceTo ?? double.MaxValue));
 
-            // Фильтрация по OptionIds, если заданы
-            if (filter.OptionIds != null && filter.OptionIds.Any())
-            {
-                var requiredOptionIds = filter.OptionIds;
-                var requiredCount = requiredOptionIds.Count;
-
-                Query.Where(h =>
-                    h.Options.Select(o => o.Id).Intersect(requiredOptionIds).Count() == requiredCount);
-            }
+           
 
             // Фильтрация по Timestamp
             if (filter.Timestamp != null)

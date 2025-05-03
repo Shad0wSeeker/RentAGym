@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace RentAGym.Application.CommonUseCases
 {
@@ -29,6 +30,16 @@ namespace RentAGym.Application.CommonUseCases
 
             var response = await repository.ListAsync(
                 new HallListSpecification(request.filter), cancellationToken);
+
+            // Фильтрация по OptionIds, если заданы
+            if (request.filter.OptionIds != null && request.filter.OptionIds.Any())
+            {
+                var requiredOptionIds = request.filter.OptionIds;
+                var requiredCount = requiredOptionIds.Count;
+
+                response = response.Where(h =>
+                    h.Options.Select(o => o.Id).Intersect(requiredOptionIds).Count() == requiredCount).ToList();
+            }
 
             return _mapper.Map<IEnumerable<HallListRequestDTO>>(response);
         }
