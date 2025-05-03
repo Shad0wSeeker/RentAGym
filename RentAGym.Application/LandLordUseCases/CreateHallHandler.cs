@@ -22,14 +22,18 @@ namespace RentAGym.Application.LandLordUseCases
             var tempHall = _mapper.Map<Hall>(request.requestDTO);
             try
             {
-                await _unitOfWork.HallRepository.SaveChangesAsync();
-                tempHall.LandlordId = (await _unitOfWork.FacilityRepository.GetByIdAsync(request.requestDTO.FacilityId)).LandLordId;    //!!!
-                var hall = await _unitOfWork.HallRepository.AddAsync(tempHall);
-                await _unitOfWork.HallRepository.SaveChangesAsync();
+                var fac = await _unitOfWork.FacilityRepository.GetByIdAsync(request.requestDTO.FacilityId);
+                var options = await _unitOfWork.OptionRepository.ListAsync();
 
-                foreach(var preFile in request.requestDTO.ImagePaths)
+                tempHall.LandlordId = fac.LandLordId;    //!!!
+                tempHall.Facility = fac;
+                tempHall.FacilityId = fac.Id;
+                tempHall.Options = options.Where(o => tempHall.Options.Contains(o)).ToList();
+
+                var hall = await _unitOfWork.HallRepository.AddAsync(tempHall);
+                foreach (var preFile in request.requestDTO.ImagePaths)
                 {
-                    hall.Images.Add(new ImageData() {Name=preFile, ImageUri = preFile, HallId = hall.Id });
+                    tempHall.Images.Add(new ImageData() {Name=preFile, ImageUri = preFile, HallId = hall.Id });
                 }
                 await _unitOfWork.HallRepository.UpdateAsync(tempHall);
                 await _unitOfWork.HallRepository.SaveChangesAsync();

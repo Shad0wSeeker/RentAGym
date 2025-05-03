@@ -21,7 +21,7 @@ namespace RentAGym.Persistence
             using var context = services.GetRequiredService<ApplicationDbContext>();
             using var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
             //await context.Database.EnsureDeletedAsync();
-            //await context.Database.EnsureCreatedAsync();
+            await context.Database.EnsureCreatedAsync();
 
             #region Users
 
