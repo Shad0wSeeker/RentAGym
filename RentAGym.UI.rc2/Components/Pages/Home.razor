@@ -56,5 +56,6 @@
         Halls = null;
         Filter.TypeId = HallTypeFilter.Id;
         Halls = Halls = await Mediator.Send(new GetHallListRequest(Filter));
+        StateHasChanged();
     }
 }
